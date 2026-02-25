@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
 
         // Define la dirección del movimiento respecto al escenario
-        m_Movement.Set(horizontal, 0f, vertical);
+        m_Movement.Set(-horizontal, 0f, -vertical);
         m_Movement.Normalize(); // Evita que corra más rápido en diagonal
 
         // Detecta si el jugador se está moviendo
