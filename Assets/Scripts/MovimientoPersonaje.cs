@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class MovimientoPersonaje : MonoBehaviour
 {
     public float VelocidadRotacion = 20f; 
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
     Vector3 m_Movement;
-    Quaternion m_Rotation = Quaternion.identity; 
+    Quaternion m_Rotation = Quaternion.identity;
+    public AudioSource sonidoPasos;
 
     void Start()
     {
         
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
+        sonidoPasos = GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
@@ -37,6 +39,18 @@ public class PlayerMovement : MonoBehaviour
         // Calcula la rotación hacia la dirección del movimiento
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, m_Movement, VelocidadRotacion * Time.deltaTime, 0f);
         m_Rotation = Quaternion.LookRotation(desiredForward);
+
+        // CONTROL DEL SONIDO DE PASOS
+        if (isWalking)
+        {
+            if (!sonidoPasos.isPlaying)
+                sonidoPasos.Play();
+        }
+        else
+        {
+            sonidoPasos.Stop();
+        }
+
     }
 
     void OnAnimatorMove()

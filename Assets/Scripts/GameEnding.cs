@@ -8,10 +8,12 @@ public class GameEnding : MonoBehaviour
     public float fadeDuration = 1f;
     public float displayImageDuration = 1f;
     public GameObject player;
+
     public CanvasGroup exitBackgroundImageCanvasGroup;
-    public AudioSource exitAudio;
+    public AudioSource exitAudio;      // 🎵 sonido de victoria
+
     public CanvasGroup caughtBackgroundImageCanvasGroup;
-    public AudioSource caughtAudio;
+    public AudioSource caughtAudio;    // 🎵 sonido de captura
 
     bool m_IsPlayerAtExit;
     bool m_IsPlayerCaught;
@@ -20,7 +22,7 @@ public class GameEnding : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject == player)
+        if (other.gameObject == player)
         {
             m_IsPlayerAtExit = true;
         }
@@ -30,37 +32,39 @@ public class GameEnding : MonoBehaviour
     {
         m_IsPlayerCaught = true;
     }
-    
+
     void Update()
     {
-        if(m_IsPlayerAtExit)
+        if (m_IsPlayerAtExit)
         {
             EndLevel(exitBackgroundImageCanvasGroup, false, exitAudio);
         }
-        else if(m_IsPlayerCaught)
+        else if (m_IsPlayerCaught)
         {
             EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio);
         }
     }
 
-    void EndLevel(CanvasGroup imageCanvasGroup, bool doRestart, AudioSource audioSource)  // Fade the Canvas Group and quit the game
+    void EndLevel(CanvasGroup imageCanvasGroup, bool doRestart, AudioSource audioSource)
     {
-        if(!m_HasAudioPlayed)
+        // 🎵 reproducir audio solo una vez
+        if (!m_HasAudioPlayed)
         {
             audioSource.Play();
-            m_HasAudioPlayed = false;
+            m_HasAudioPlayed = true;   // ✅ CORREGIDO
         }
+
         m_Timer += Time.deltaTime;
         imageCanvasGroup.alpha = m_Timer / fadeDuration;
-        if(m_Timer > fadeDuration + displayImageDuration)
+
+        if (m_Timer > fadeDuration + displayImageDuration)
         {
-            if(doRestart)
+            if (doRestart)
             {
                 SceneManager.LoadScene(0);
             }
             else
             {
-                //Application.Quit();
                 SceneManager.LoadScene(0);
             }
         }
